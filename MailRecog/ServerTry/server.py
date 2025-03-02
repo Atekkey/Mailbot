@@ -28,6 +28,7 @@ while True:
     #     cv2.imshow('Server', frame)
     # except (Exception):
     #     pass
+    time.sleep(15)
 
 cap.release()
 # cv2.destroyAllWindows()
