@@ -3,3 +3,14 @@
     # Phase people out, @Channel the bot to opt out
     # Slack API
     # @channel with ur Full name to opt in
+
+$ deactivate
+$ conda deactivate
+$ cd MailRecog
+$ source myEnv/bin/activate
+$ bash run.sh
+
+# Connect to RaspPi!
+$ ssh triangle@AJTrpi.local
+$ yes
+# password is obvious

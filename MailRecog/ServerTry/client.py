@@ -5,7 +5,7 @@ import struct
 from functions import *
 import pytesseract
 
-print("Client attempt")
+
 
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect(('127.0.0.1', 8888))  # Replace 'server_ip_address' with the actual server IP
@@ -30,7 +30,8 @@ while True:
     frame = pickle.loads(frame_data)
     try:
         cv2.imshow('Client', frame)
-        print(imageToText(frame))
+        text = imageToText(frame)
+        checkForName(text)
     except Exception as e:
         print(e)
         pass
