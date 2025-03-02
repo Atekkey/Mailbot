@@ -34,9 +34,9 @@ while True:
         # cv2.imshow('Client', frame)
         text = imageToText(frame)
         name = checkForName(text)
-        print("_")
+        print("text: ", text)
         if(name != ""):
-            print("NAME FOUND: ", name)
+            print("\nNAME FOUND: ", name)
             os.system("sleep 5 ")
             # print(name)
     except Exception as e:
