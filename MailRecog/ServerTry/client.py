@@ -35,6 +35,7 @@ while True:
         # cv2.imshow('Client', frame)
         text = imageToText(frame)
         name = checkForName(text)
+        print(text)
         if(name != ""):
             print("\nNAME FOUND: ", name)
     except Exception as e:

@@ -20,7 +20,6 @@ print(f"Connection from {client_address} accepted")
 cap = cv2.VideoCapture(0) # use 0
 
 while True:
-    print("_")
     ret, frame = cap.read()
     frame_data = pickle.dumps(frame)
     client_socket.sendall(struct.pack("Q", len(frame_data)))
