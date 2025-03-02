@@ -5,8 +5,8 @@ import struct
 from functions import *
 import pytesseract
 import os
-print("Reach0")
-print("Reach1")
+
+
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect(('127.0.0.1', 8888))  # Replace 'server_ip_address' with the actual server IP
 data = b""
@@ -45,4 +45,3 @@ while True:
     # if cv2.waitKey(1) == ord("a"): # Hold the a Key to quit, FIX!
     #     break
 # cv2.destroyAllWindows()
-print("Reach2")
