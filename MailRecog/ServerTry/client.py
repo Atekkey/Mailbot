@@ -31,7 +31,6 @@ while True:
     frame = pickle.loads(frame_data)
     try:
         # cv2.imshow('Client', frame)
-        print("Reach0")
         text = imageToText(frame)
         print("Reach1")
         name = checkForName(text)
@@ -42,7 +41,7 @@ while True:
             os.system("sleep 5 ")
             # print(name)
     except Exception as e:
-        # print(e)
+        print(e)
         pass
     # if cv2.waitKey(1) == ord("a"): # Hold the a Key to quit, FIX!
     #     break
