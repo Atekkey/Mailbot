@@ -5,6 +5,9 @@
 # TODO Fix server staying open
 import subprocess
 import os
+import sys
+sys.tracebacklimit = 0
+
 def main():
     os.system("python ./ServerTry/server.py &")
     os.system("python ./ServerTry/client.py")
