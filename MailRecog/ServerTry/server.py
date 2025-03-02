@@ -5,6 +5,7 @@ import cv2
 import socket
 import pickle
 import struct
+import os
 
 import sys
 sys.tracebacklimit = 0
@@ -21,6 +22,7 @@ while True:
     i+=1
     ret, frame = cap.read()
     if(i%100 != 0):
+        os.system("sleep 1")
         continue # Speed up attempt
     frame_data = pickle.dumps(frame)
     client_socket.sendall(struct.pack("Q", len(frame_data)))
