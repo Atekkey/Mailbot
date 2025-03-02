@@ -8,7 +8,7 @@ import struct
 
 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_socket.bind(('127.0.0.1', 8888)) # Switched from 0.0.0.0 to be localhost
+server_socket.bind(('0.0.0.0', 8888)) # Switched from 127.0.0.1
 server_socket.listen(5)
 print("Server is listening...")
 client_socket, client_address = server_socket.accept()
