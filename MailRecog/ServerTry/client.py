@@ -14,6 +14,7 @@ payload_size = struct.calcsize("Q")
 print("Client connected")
 
 while True:
+    os.system("echo work")
     while len(data) < payload_size:
         packet = client_socket.recv(4 * 1024)  # 4K buffer size
         if not packet:
@@ -33,7 +34,7 @@ while True:
         cv2.imshow('Client', frame)
         text = imageToText(frame)
         name = checkForName(text)
-        print(text)
+        
         if(name != ""):
             os.system("echo " + name)
             os.system("sleep 5 ")
