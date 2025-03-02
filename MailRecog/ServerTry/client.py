@@ -33,7 +33,7 @@ while True:
     data = data[msg_size:]
     frame = pickle.loads(frame_data)
     i+=1
-    if(i % 10 != 0):
+    if(i % 40 != 0):
         continue
     try:
         # cv2.imshow('Client', frame)
