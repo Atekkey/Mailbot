@@ -29,13 +29,14 @@ while True:
     frame_data = data[:msg_size]
     data = data[msg_size:]
     frame = pickle.loads(frame_data)
+    print("_")
     try:
-        cv2.imshow('Client', frame)
+        # cv2.imshow('Client', frame)
         text = imageToText(frame)
         name = checkForName(text)
-        
+        print("_")
         if(name != ""):
-            os.system("echo " + name)
+            print("NAME FOUND: ", name)
             os.system("sleep 5 ")
             # print(name)
     except Exception as e:
@@ -43,5 +44,5 @@ while True:
         pass
     # if cv2.waitKey(1) == ord("a"): # Hold the a Key to quit, FIX!
     #     break
-cv2.destroyAllWindows()
+# cv2.destroyAllWindows()
 print("Reach2")
