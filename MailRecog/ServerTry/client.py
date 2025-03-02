@@ -33,13 +33,12 @@ while True:
     data = data[msg_size:]
     frame = pickle.loads(frame_data)
     i+=1
-    if(i % 40 != 0):
+    if(i % 40 != 0): # KEEP very helpful, kills the delay
         continue
     try:
         # cv2.imshow('Client', frame)
         text = imageToText(frame)
         name = checkForName(text)
-        print(text)
         if(name != ""):
             print("\nNAME FOUND: ", name)
     except Exception as e:
