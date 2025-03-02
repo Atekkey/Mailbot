@@ -32,13 +32,10 @@ while True:
     try:
         # cv2.imshow('Client', frame)
         text = imageToText(frame)
-        print("Reach1")
         name = checkForName(text)
-        print("Reach2")
-        print("text: ", text)
         if(name != ""):
             print("\nNAME FOUND: ", name)
-            os.system("sleep 5 ")
+            os.system("sleep 1 ")
             # print(name)
     except Exception as e:
         print(e)
