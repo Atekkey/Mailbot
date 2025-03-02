@@ -29,7 +29,6 @@ while True:
     frame_data = data[:msg_size]
     data = data[msg_size:]
     frame = pickle.loads(frame_data)
-    print("_")
     try:
         # cv2.imshow('Client', frame)
         text = imageToText(frame)
