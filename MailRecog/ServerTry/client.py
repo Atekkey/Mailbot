@@ -31,8 +31,11 @@ while True:
     frame = pickle.loads(frame_data)
     try:
         # cv2.imshow('Client', frame)
+        print("Reach0")
         text = imageToText(frame)
+        print("Reach1")
         name = checkForName(text)
+        print("Reach2")
         print("text: ", text)
         if(name != ""):
             print("\nNAME FOUND: ", name)
