@@ -13,7 +13,7 @@ server_socket.listen(5)
 print("Server is listening...")
 client_socket, client_address = server_socket.accept()
 print(f"Connection from {client_address} accepted")
-cap = cv2.VideoCapture("/dev/video2") # if computer, use 0
+cap = cv2.VideoCapture("/dev/video3") # if computer, use 0
 
 while True:
     ret, frame = cap.read()
