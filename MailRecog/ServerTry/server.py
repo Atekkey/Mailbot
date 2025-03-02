@@ -6,6 +6,7 @@ import socket
 import pickle
 import struct
 import os
+import time
 
 import sys
 sys.tracebacklimit = 0
@@ -17,13 +18,9 @@ print("Server is listening...")
 client_socket, client_address = server_socket.accept()
 print(f"Connection from {client_address} accepted")
 cap = cv2.VideoCapture(0) # use 0
-i = -1
+
 while True:
-    i+=1
     ret, frame = cap.read()
-    if(i%100 != 0):
-        os.system("sleep 1")
-        continue # Speed up attempt
     frame_data = pickle.dumps(frame)
     client_socket.sendall(struct.pack("Q", len(frame_data)))
     client_socket.sendall(frame_data)
@@ -31,6 +28,7 @@ while True:
     #     cv2.imshow('Server', frame)
     # except (Exception):
     #     pass
+    time.sleep(1)
 
 cap.release()
 # cv2.destroyAllWindows()
