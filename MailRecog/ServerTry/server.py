@@ -6,6 +6,8 @@ import socket
 import pickle
 import struct
 
+import sys
+sys.tracebacklimit = 0
 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.bind(('127.0.0.1', 8888)) # Switched from 0.0.0.0

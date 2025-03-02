@@ -6,6 +6,8 @@ from functions import *
 import pytesseract
 import os
 
+import sys
+sys.tracebacklimit = 0
 
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect(('127.0.0.1', 8888))  # Replace 'server_ip_address' with the actual server IP
