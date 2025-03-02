@@ -20,7 +20,7 @@ def imageToText(img):
     return text
 
 # MAIN FUNCTION. RUNS ON INIT
-pList = f.personList("../names.txt")
+pList = f.personList("/home/triangle/Downloads/MailBoxCompVis/MailRecog/names.txt")
 
 print(pList.persons)
 def checkForName(textIn):
