@@ -20,7 +20,7 @@ i = -1
 while True:
     i+=1
     ret, frame = cap.read()
-    if(i %3 !=0):
+    if(i%100 != 0):
         continue # Speed up attempt
     frame_data = pickle.dumps(frame)
     client_socket.sendall(struct.pack("Q", len(frame_data)))
