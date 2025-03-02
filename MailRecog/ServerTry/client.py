@@ -35,8 +35,6 @@ while True:
         name = checkForName(text)
         if(name != ""):
             print("\nNAME FOUND: ", name)
-            os.system("sleep 1 ")
-            # print(name)
     except Exception as e:
         print(e)
         pass
