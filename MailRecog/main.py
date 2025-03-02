@@ -2,9 +2,13 @@
     # Do we have to reinitiate everything every time we want to run?
 
 # For now lets go with the reinit approach
-
+# TODO Fix server staying open
+import subprocess
+import os
 def main():
-    return 0
+    os.system("python ./ServerTry/server.py &")
+    os.system("python ./ServerTry/client.py")
+    return 0 
 
 
 main()

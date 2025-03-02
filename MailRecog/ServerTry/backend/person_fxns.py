@@ -5,9 +5,8 @@ class personList:
         if(fname == None):
             return
         with open(fname, "r") as f: # read file
-            for line in f:
-                self.persons.append(line)
-        print(self.persons)
+            for name in f:
+                self.persons.append(name.strip().upper())
 
     def addName(self, str_name):
         self.persons.append(str_name.upper())

@@ -22,14 +22,13 @@ def imageToText(img):
 # MAIN FUNCTION. RUNS ON INIT
 pList = f.personList("/Users/anandtekkey/macGitRepo/MailBoxCompVis/MailRecog/names.txt")
 
-
+print(pList.persons)
 def checkForName(textIn):
     textIn = pList.preproccess(textIn)
     name = pList.strCompareToList1(textIn)
     if(name == ""):
-        return
+        return ""
     else:
-        print(name)
-        exit(0)
+        return name
     
 
