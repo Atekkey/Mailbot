@@ -15,6 +15,7 @@ data = b""
 payload_size = struct.calcsize("Q")
 print("Client connected")
 
+i = 0
 while True:
     while len(data) < payload_size:
         packet = client_socket.recv(4 * 1024)  # 4K buffer size
@@ -31,6 +32,9 @@ while True:
     frame_data = data[:msg_size]
     data = data[msg_size:]
     frame = pickle.loads(frame_data)
+    i+=1
+    if(i % 10 != 0):
+        continue
     try:
         # cv2.imshow('Client', frame)
         text = imageToText(frame)
