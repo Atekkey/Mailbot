@@ -8,9 +8,13 @@ import os
 
 import sys
 sys.tracebacklimit = 0
+globalIsOnComputer = True
 
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client_socket.connect(('127.0.0.1', 8888))  # Replace 'server_ip_address' with the actual server IP
+if(globalIsOnComputer):
+    client_socket.connect(('0.0.0.0', 8888))  
+else:
+    client_socket.connect(('127.0.0.1', 8888))  
 data = b""
 payload_size = struct.calcsize("Q")
 print("Client connected")
@@ -36,7 +40,8 @@ while True:
     if(i % 40 != 0): # KEEP very helpful, kills the delay
         continue
     try:
-        # cv2.imshow('Client', frame)
+        if globalIsOnComputer:
+            cv2.imshow('Client', frame)
         text = imageToText(frame)
         name = checkForName(text)
         if(name != ""):
@@ -44,6 +49,5 @@ while True:
     except Exception as e:
         print(e)
         pass
-    # if cv2.waitKey(1) == ord("a"): # Hold the a Key to quit, FIX!
-    #     break
+    
 # cv2.destroyAllWindows()
