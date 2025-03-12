@@ -17,12 +17,24 @@ app = App(token=BOTTOKEN)
 @app.event("message")
 def handle_dm(event, say):
     user_id = event["user"]
-    text = event["text"]
+    text = event["text"].upper().strip()
+    textSplit = text.strip().split(" ")
+    if event.get("channel_type") != "im":
+        return
+    
+    if(textSplit[0] == "ADD"):
+        say(f"Adding name: {" ".join(textSplit[1:])}")
+    
+    if(textSplit[0] == "START"):
+        say(f"Initializing...")
 
-    # Only respond if it's a DM
-    if event.get("channel_type") == "im":
-        print(f"Received DM from {user_id}: {text}")
-        say(f"Hey <@{user_id}>, I got your message: '{text}'")
+        os.system("python ../server.py &")
+        os.system("python ../client.py")
+
+        say(f"Started!")
+
+
+        
 
 # Start the bot using Socket Mode
 if __name__ == "__main__":

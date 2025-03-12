@@ -3,7 +3,7 @@
     # Phase people out, dm the bot to opt out?
     # Slack API
     # dm bot with ur Full name to opt in
-
+NOT BASH
 $ deactivate
 $ conda deactivate
 $ cd MailRecog
