@@ -13,6 +13,7 @@ from slack_bolt.adapter.socket_mode import SocketModeHandler
 from Handle_Names import add_alias, remove_id
 
 app = App(token=BOTTOKEN)
+print("Passive, PID: ", str(os.getpid()))
 
 @app.event("message")
 def handle_dm(event, say):
@@ -41,14 +42,17 @@ def handle_dm(event, say):
     if(textSplit[0] == "START" or textSplit[0] == "INIT"):
         say(f"Initializing...")
         say(f"Started!")
-        return
+        os._exit(0)
+
+    if(textSplit[0] == "ADMINKILL"):
+        say(f"KILLED")
+        os._exit(-4)
     
     say("Unknown Statement.\nUsage: [Start|Remove User] OR [Add] [First] [Last]")
 
 
 # Start the bot using Socket Mode
-if __name__ == "__main__":
-    handler = SocketModeHandler(app, APPTOKEN)
-    handler.start()
+handler = SocketModeHandler(app, APPTOKEN)
+handler.start()
 
 

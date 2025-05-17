@@ -1,7 +1,6 @@
 import json
 import os
 
-
 def get_id_to_alias():
     with open("names.json", "r+") as f:
         id_to_alias = json.load(f)

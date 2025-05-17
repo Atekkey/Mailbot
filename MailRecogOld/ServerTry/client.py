@@ -49,5 +49,6 @@ while True:
     except Exception as e:
         print(e)
         pass
+
     
 # cv2.destroyAllWindows()
