@@ -10,6 +10,8 @@ import os
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 
+from Handle_Names import add_alias, remove_id
+
 app = App(token=BOTTOKEN)
 
 @app.event("message")
@@ -20,14 +22,28 @@ def handle_dm(event, say):
     if event.get("channel_type") != "im":
         return
     
-    # if(textSplit[0] == "ADD"):
-    #     say(f"Adding name: { " ".join(textSplit[1:]) }")
+    if(textSplit[0] == "ADD"):
+        name = " ".join(textSplit[1:])
+        say(f"Adding name: {name}...")
+        add_alias(user_id, name)
+        say("Done!")
+        return
     
-    if(textSplit[0] == "START"):
+    if(textSplit[0] == "REMOVE" and textSplit[1] == "USER"):
+        say(f"Removing self...")
+        aliases = remove_id(user_id)
+        if(aliases == []):
+            say("No aliases found.")
+            return
+        say(f"Removed Aliases: {aliases}")
+        return
+    
+    if(textSplit[0] == "START" or textSplit[0] == "INIT"):
         say(f"Initializing...")
-
         say(f"Started!")
-
+        return
+    
+    say("Unknown Statement.\nUsage: [Start|Remove User] OR [Add] [First] [Last]")
 
 
 # Start the bot using Socket Mode
