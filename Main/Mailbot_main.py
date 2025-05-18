@@ -31,7 +31,7 @@ def main():
             exit(1)
         
         init_time = time.time()
-        lifespan = 1 * 60 # In seconds
+        lifespan = 3 * 60 # In seconds
         stop_time = init_time + lifespan
         # Start Scanner.py
         scanner = subprocess.Popen(["python", "Scanner.py"]) # Startup Scanner.py
