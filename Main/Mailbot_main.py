@@ -13,7 +13,7 @@ from Handle_Names import generate_list, strCompareToList
 from Active_Slack import notify_user
 
 sys.tracebacklimit = 0
-globalIsOnComputer = True
+globalIsOnComputer = False
 
 
 def main():

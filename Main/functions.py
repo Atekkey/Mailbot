@@ -4,7 +4,7 @@ import pytesseract
 import numpy as np
 import cv2
 
-globalIsOnComputer = True
+globalIsOnComputer = False
 
 def imageToText(img):
     img = np.array(img)

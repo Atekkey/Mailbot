@@ -1,6 +1,6 @@
 # $ python3 -m http.server
 # Run above in a separate terminal
-globalIsOnComputer = True
+globalIsOnComputer = False
 import cv2
 import socket
 import pickle
