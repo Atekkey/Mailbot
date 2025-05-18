@@ -10,7 +10,7 @@ import subprocess
 import signal
 import time
 from Handle_Names import generate_list, strCompareToList
-from Active_Slack import notify_user
+from Active_Slack import notify_user, set_bot_status
 
 sys.tracebacklimit = 0
 globalIsOnComputer = False
@@ -19,10 +19,11 @@ globalIsOnComputer = False
 def main():
     signal.signal(signal.SIGPIPE, signal.SIG_IGN) # Ignore SIGPIPE
     print("Main, PID: ", str(os.getpid()))
-    fork_bomb_prot = 4
+
     # WHILE NOT KILLED::::
-    while(fork_bomb_prot > 0):
-        fork_bomb_prot -= 1
+    while(1):
+
+        set_bot_status("Listening...", ":robot_face:")
 
         passive = subprocess.Popen(["python", "Passive_Slack.py"]) # Startup Passive_Slack.py
         print("Passive pid: ", str(passive.pid))
@@ -36,6 +37,7 @@ def main():
         # Start Scanner.py
         scanner = subprocess.Popen(["python", "Scanner.py"]) # Startup Scanner.py
         print("Scanner pid: ", str(scanner.pid))
+        set_bot_status("Scanning...", ":gear:")
         
         time.sleep(1) # Bandaid to the race cond
         reading_from_scanner(stop_time) # Start client code, runs for lifespan

@@ -27,7 +27,7 @@ def safe_say(message, say):
 @app.event("message")
 def handle_dm(event, say):
     USAGE = "Usage: [Start|List|Remove User] OR [Add] [First] [Last]"
-    
+
     user_id = event["user"]
     text = event["text"].upper().strip()
     textSplit = text.strip().split(" ")
@@ -71,6 +71,7 @@ def handle_dm(event, say):
             return
     
     safe_say("Unknown Statement.\n" + USAGE, say)
+
 
 
 # Start the bot using Socket Mode
