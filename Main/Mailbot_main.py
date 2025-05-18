@@ -2,50 +2,56 @@ import cv2
 import socket
 import pickle
 import struct
-# from functions import *
+from functions import imageToText
 import pytesseract
 import os
 import sys
 import subprocess
 import signal
 import time
+from Handle_Names import generate_list, strCompareToList
+from Active_Slack import notify_user
 
 sys.tracebacklimit = 0
 globalIsOnComputer = True
 
+
 def main():
+    signal.signal(signal.SIGPIPE, signal.SIG_IGN) # Ignore SIGPIPE
     print("Main, PID: ", str(os.getpid()))
     fork_bomb_prot = 4
     # WHILE NOT KILLED::::
     while(fork_bomb_prot > 0):
         fork_bomb_prot -= 1
 
-        # passive = subprocess.Popen(["python", "Passive_Slack.py"]) # Startup Passive_Slack.py
-        # passive.wait()
-        # if(passive.returncode != 0): # Killed
-        #     exit(1)
+        passive = subprocess.Popen(["python", "Passive_Slack.py"]) # Startup Passive_Slack.py
+        print("Passive pid: ", str(passive.pid))
+        passive.wait()
+        if(passive.returncode != 0): # Killed
+            exit(1)
         
         init_time = time.time()
-        stop_time = init_time + 2 #(3 * 60) # 3 mins in future
+        lifespan = 1 * 60 # In seconds
+        stop_time = init_time + lifespan
         # Start Scanner.py
         scanner = subprocess.Popen(["python", "Scanner.py"]) # Startup Scanner.py
-        print("Got scanner pid: ", str(scanner.pid))
-        while time.time() < stop_time:
-            void = 0
+        print("Scanner pid: ", str(scanner.pid))
+        
+        time.sleep(1) # Bandaid to the race cond
+        reading_from_scanner(stop_time) # Start client code, runs for lifespan
         
         os.kill((scanner.pid), signal.SIGTERM) # Send signal to Scanner.py
         
-        # Start client-code & init lifespan timer
-        # Wait for lifespan to expire
-
         # Kill Scanner.py
         # Head to top of loop
 
 
 # This is the client side of the socket connection
 def reading_from_scanner(stop_time):
-    # If code is running on arduino --> False. If on computer --> True 
     
+    # Gen alias list
+    names = generate_list()
+
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # Arduino vs Laptop socket Connection
     if(globalIsOnComputer):
@@ -59,7 +65,7 @@ def reading_from_scanner(stop_time):
     while time.time() < stop_time:
         # While the current data is less than the size of the desired payload size
         while len(data) < payload_size:
-            # Take in a packet at 4K resolution
+            # Take in a packet
             packet = client_socket.recv(4 * 1024)  # 4K buffer size
             if not packet:
                 break
@@ -67,7 +73,7 @@ def reading_from_scanner(stop_time):
         # If there is no data built from the packets, ignore processing
         if not data:
             break
-        # Break data apart into desired data vs remainder
+        # Break data apart into struct data vs remainder
         packed_msg_size = data[:payload_size]
         data = data[payload_size:]
         msg_size = struct.unpack("Q", packed_msg_size)[0]
@@ -83,9 +89,11 @@ def reading_from_scanner(stop_time):
             if globalIsOnComputer:
                 cv2.imshow('Client', frame)
             text = imageToText(frame)
-            name = checkForName(text)
+            name = strCompareToList(names, text)
             if(name != ""):
-                print("\nNAME FOUND: ", name)
+                # Notify User
+                notify_user(name)
+
         except Exception as e:
             print(e)
             pass

@@ -1,5 +1,6 @@
 import json
 import os
+import regex as re
 
 def get_id_to_alias():
     with open("names.json", "r+") as f:
@@ -8,8 +9,11 @@ def get_id_to_alias():
 
 def get_alias_to_id():
     with open("names.json", "r+") as f:
+        alias_to_id = {}
         id_to_alias = json.load(f)
-        alias_to_id = {val: key for key, val in id_to_alias.items()}
+        for id in id_to_alias:
+            for alias in id_to_alias[id]:
+                alias_to_id[alias] = id
         return alias_to_id
 
 def add_alias(id, alias):
@@ -36,3 +40,19 @@ def remove_id(id):
     with open("names.json", "w") as f:
         json.dump(id_to_alias, f, indent=2)
     return aliases
+
+def generate_list():
+    alias_list = []
+    with open("names.json", "r+") as f:
+        id_to_alias = json.load(f)
+        for key in id_to_alias:
+            for alias in id_to_alias[key]:
+                alias_list.append(alias)
+    alias_list = list(set(alias_list)) # avoid dups
+    return alias_list
+
+def strCompareToList(names, longStr):
+    for name in names:
+        if(re.search(name, longStr) != None):
+            return name
+    return ""

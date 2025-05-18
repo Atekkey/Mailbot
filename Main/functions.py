@@ -3,7 +3,7 @@ from PIL import Image
 import pytesseract
 import numpy as np
 import cv2
-from backend import person_fxns as f
+
 globalIsOnComputer = True
 
 def imageToText(img):
@@ -19,14 +19,7 @@ def imageToText(img):
     # print("text: ", text, " --")
     return text
 
-# MAIN FUNCTION. RUNS ON INIT
-pList = None
-if globalIsOnComputer:
-    pList = f.personList("/Users/anandtekkey/macGitRepo/MailBoxCompVis/MailRecog/names.txt")
-else:
-    pList = f.personList("/home/triangle/Downloads/MailBoxCompVis/MailRecog/names.txt")
 
-print(pList.persons)
 def checkForName(textIn):
     textIn = pList.preproccess(textIn)
     name = pList.strCompareToList1(textIn)

@@ -10,16 +10,17 @@ import time
 import signal
 import sys
 
-print("Scanner, PID: ", str(os.getpid()))
+# print("Scanner, PID: ", str(os.getpid()))
 
 sys.tracebacklimit = 0
 cap = None
 def signal_handler(sig, frame):
-    print("KILLED")
+    # print("KILLED")
     if cap is not None:
         cap.release()
     exit(0)
 
+signal.signal(signal.SIGPIPE, signal.SIG_IGN) # Ignore SIGPIPE
 signal.signal(signal.SIGINT, signal_handler)
 signal.signal(signal.SIGTERM, signal_handler)
 
@@ -29,9 +30,9 @@ if(globalIsOnComputer):
 else:
     server_socket.bind(('127.0.0.1', 8888)) # Switched from 0.0.0.0
 server_socket.listen(5)
-print("Server is listening...")
+# print("Server is listening...")
 client_socket, client_address = server_socket.accept()
-print(f"Connection from {client_address} accepted")
+# print(f"Connection from {client_address} accepted")
 
 cap = cv2.VideoCapture(0) # use 0
 

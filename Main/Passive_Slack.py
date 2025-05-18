@@ -2,6 +2,7 @@
 import os
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
+import signal
 
 BOTTOKEN = os.environ.get("BOTTOKEN")
 APPTOKEN = os.environ.get("APPTOKEN")
@@ -10,45 +11,66 @@ import os
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 
-from Handle_Names import add_alias, remove_id
+from Handle_Names import add_alias, remove_id, get_id_to_alias
+
 
 app = App(token=BOTTOKEN)
-print("Passive, PID: ", str(os.getpid()))
+signal.signal(signal.SIGPIPE, signal.SIG_IGN) # Ignore SIGPIPE
+# print("Passive, PID: ", str(os.getpid()))
+
+def safe_say(message, say):
+    try:
+        say(message)
+    except Exception as e:
+        void = 1
 
 @app.event("message")
 def handle_dm(event, say):
+    USAGE = "Usage: [Start|List|Remove User] OR [Add] [First] [Last]"
+    
     user_id = event["user"]
     text = event["text"].upper().strip()
     textSplit = text.strip().split(" ")
     if event.get("channel_type") != "im":
         return
     
-    if(textSplit[0] == "ADD"):
+    if(textSplit[0] == "ADD" and len(textSplit) >= 3):
         name = " ".join(textSplit[1:])
-        say(f"Adding name: {name}...")
+        safe_say(f"Adding name: {name}...", say)
         add_alias(user_id, name)
-        say("Done!")
+        safe_say("Done!", say)
         return
     
-    if(textSplit[0] == "REMOVE" and textSplit[1] == "USER"):
-        say(f"Removing self...")
+    if((textSplit[0] == "REMOVE" and textSplit[1] == "USER") and len(textSplit) == 2):
+        safe_say(f"Removing self...", say)
         aliases = remove_id(user_id)
         if(aliases == []):
-            say("No aliases found.")
+            safe_say("No aliases found.", say)
             return
-        say(f"Removed Aliases: {aliases}")
+        safe_say(f"Removed Aliases: {aliases}", say)
         return
     
-    if(textSplit[0] == "START" or textSplit[0] == "INIT"):
-        say(f"Initializing...")
-        say(f"Started!")
-        os._exit(0)
+    if(len(textSplit) == 1):
 
-    if(textSplit[0] == "ADMINKILL"):
-        say(f"KILLED")
-        os._exit(-4)
+        if(textSplit[0] == "START" or textSplit[0] == "INIT"):
+            safe_say(f"Started!", say)
+            os._exit(0)
+
+        if(textSplit[0] == "ADMINKILL" and user_id == "U06DP4P5DC6"):
+            safe_say(f"KILLED", say)
+            os._exit(-4)
+        
+        if(textSplit[0] == "LIST"):
+            id_to_alias = get_id_to_alias()
+            aliases = id_to_alias.get(user_id)
+            safe_say(f"Aliases: {aliases}", say)
+            return
+        
+        if(textSplit[0] == "HELP"):
+            safe_say(USAGE, say)
+            return
     
-    say("Unknown Statement.\nUsage: [Start|Remove User] OR [Add] [First] [Last]")
+    safe_say("Unknown Statement.\n" + USAGE, say)
 
 
 # Start the bot using Socket Mode
