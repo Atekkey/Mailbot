@@ -17,19 +17,16 @@ def notify_user(alias):
     resp = app.client.conversations_open(users=[id])
     app.client.chat_postMessage(channel=resp["channel"]["id"], text=f"{alias}, You have Mail!")
 
-def set_bot_status(text, emoji):
+def set_bot_status(status = "away"):
+    
     BOTTOKEN = os.environ.get("BOTTOKEN")
     app = App(token=BOTTOKEN)
 
-    profile = {
-        "status_text": text,
-        "status_emoji": emoji,
-        "status_expiration": 0 
-    }
     try:
-        app.client.users_profile_set(profile=profile)
+        app.client.users_setPresence(presence=status)
         return True
     except Exception as e:
+        print(e)
         return False
 
     

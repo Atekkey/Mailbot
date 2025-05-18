@@ -23,7 +23,7 @@ def main():
     # WHILE NOT KILLED::::
     while(1):
 
-        set_bot_status("Listening...", ":robot_face:")
+        set_bot_status("away")
 
         passive = subprocess.Popen(["python", "Passive_Slack.py"]) # Startup Passive_Slack.py
         print("Passive pid: ", str(passive.pid))
@@ -37,7 +37,7 @@ def main():
         # Start Scanner.py
         scanner = subprocess.Popen(["python", "Scanner.py"]) # Startup Scanner.py
         print("Scanner pid: ", str(scanner.pid))
-        set_bot_status("Scanning...", ":gear:")
+        set_bot_status("auto")
         
         time.sleep(1) # Bandaid to the race cond
         reading_from_scanner(stop_time) # Start client code, runs for lifespan
