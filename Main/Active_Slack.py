@@ -9,13 +9,25 @@ def notify_user(alias):
     BOTTOKEN = os.environ.get("BOTTOKEN")
     APPTOKEN = os.environ.get("APPTOKEN")
     app = App(token=BOTTOKEN)
-    # handler = SocketModeHandler(app, APPTOKEN)
 
     alias_to_id = get_alias_to_id()
     id = alias_to_id[alias]
     
     resp = app.client.conversations_open(users=[id])
     app.client.chat_postMessage(channel=resp["channel"]["id"], text=f"{alias}, You have Mail!")
+
+def notify_sender(alias):
+    if alias < 0:
+        return
+    BOTTOKEN = os.environ.get("BOTTOKEN")
+    APPTOKEN = os.environ.get("APPTOKEN")
+    app = App(token=BOTTOKEN)
+
+    alias_to_id = get_alias_to_id()
+    id = alias_to_id[alias]
+    
+    resp = app.client.conversations_open(users=[id])
+    app.client.chat_postMessage(channel=resp["channel"]["id"], text=f"{alias}'s Mail Proccesed.")
 
 def set_bot_status(status = "away"):
     

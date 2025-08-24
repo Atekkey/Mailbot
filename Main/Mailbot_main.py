@@ -10,11 +10,11 @@ import subprocess
 import signal
 import time
 from Handle_Names import generate_list, strCompareToList
-from Active_Slack import notify_user, set_bot_status
+from Active_Slack import notify_user, set_bot_status, notify_sender
 
 sys.tracebacklimit = 0
 globalIsOnComputer = False
-
+globalStartUser = -1
 
 def main():
     signal.signal(signal.SIGPIPE, signal.SIG_IGN) # Ignore SIGPIPE
@@ -30,6 +30,7 @@ def main():
         passive.wait()
         if(passive.returncode != 0): # Killed
             exit(1)
+        globalStartUser = passive.returncode
         
         init_time = time.time()
         lifespan = 3 * 60 # In seconds
@@ -95,6 +96,7 @@ def reading_from_scanner(stop_time):
             if(name != ""):
                 # Notify User
                 notify_user(name)
+                notify_sender(globalStartUser)
 
         except Exception as e:
             print(e)
