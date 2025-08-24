@@ -94,8 +94,9 @@ def reading_from_scanner(stop_time):
             if(name != ""):
                 # Notify User
                 notify_user(name)
-                if startUser == "":
-                    startUser = os.environ.get("STARTUSER")
+                if not startUser:
+                    startUser = os.environ["STARTUSER"]
+                # if not startUser:
                 notify_sender(name, startUser)
         
         except Exception as e:
