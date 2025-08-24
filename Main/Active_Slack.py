@@ -6,7 +6,6 @@ from Handle_Names import get_id_to_alias, get_alias_to_id
 
 
 def notify_user(alias):
-    print("ReachNU")
     BOTTOKEN = os.environ.get("BOTTOKEN")
     APPTOKEN = os.environ.get("APPTOKEN")
     app = App(token=BOTTOKEN)
@@ -22,7 +21,7 @@ def notify_sender(alias, startId):
     BOTTOKEN = os.environ.get("BOTTOKEN")
     APPTOKEN = os.environ.get("APPTOKEN")
     app = App(token=BOTTOKEN)
-    print("SU!: ", os.environ["STARTUSER"])
+    print("SU!: ", os.environ.get("STARTUSER"))
     id = startId
     try:
         resp = app.client.conversations_open(users=[id])

@@ -95,10 +95,8 @@ def reading_from_scanner(stop_time):
                 # Notify User
                 print("Reach")
                 notify_user(name)
-                print("Reach")
-                print("SU!: ", os.environ["STARTUSER"])
                 if not startUser:
-                    startUser = os.environ["STARTUSER"]
+                    startUser = os.environ.get("STARTUSER")
                 # if not startUser:
                 notify_sender(name, startUser)
         
