@@ -54,7 +54,8 @@ def handle_dm(event, say):
 
         if(textSplit[0] == "START" or textSplit[0] == "INIT"):
             safe_say(f"Started!", say)
-            os._exit(user_id)
+            os.environ["STARTUSER"] = user_id
+            os._exit(0)
 
         if(textSplit[0] == "ADMINKILL" and user_id == "U06DP4P5DC6"):
             safe_say(f"KILLED", say)

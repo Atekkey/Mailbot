@@ -14,7 +14,7 @@ from Active_Slack import notify_user, set_bot_status, notify_sender
 
 sys.tracebacklimit = 0
 globalIsOnComputer = False
-globalStartUser = -1
+globalStartUser = ""
 
 def main():
     signal.signal(signal.SIGPIPE, signal.SIG_IGN) # Ignore SIGPIPE
@@ -30,8 +30,7 @@ def main():
         passive.wait()
         if(passive.returncode != 0): # Killed
             exit(1)
-        globalStartUser = passive.returncode
-        
+                
         init_time = time.time()
         lifespan = 3 * 60 # In seconds
         stop_time = init_time + lifespan
@@ -96,8 +95,10 @@ def reading_from_scanner(stop_time):
             if(name != ""):
                 # Notify User
                 notify_user(name)
-                notify_sender(globalStartUser)
-
+                if globalStartUser == "":
+                    globalStartUser = os.environ.get("STARTUSER")
+                notify_sender(name, globalStartUser)
+        
         except Exception as e:
             print(e)
             pass
