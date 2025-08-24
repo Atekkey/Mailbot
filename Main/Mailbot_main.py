@@ -93,7 +93,9 @@ def reading_from_scanner(stop_time):
             name = strCompareToList(names, text)
             if(name != ""):
                 # Notify User
+                print("Reach")
                 notify_user(name)
+                print("Reach")
                 print("SU!: ", os.environ["STARTUSER"])
                 if not startUser:
                     startUser = os.environ["STARTUSER"]

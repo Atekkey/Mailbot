@@ -6,6 +6,7 @@ from Handle_Names import get_id_to_alias, get_alias_to_id
 
 
 def notify_user(alias):
+    print("ReachNU")
     BOTTOKEN = os.environ.get("BOTTOKEN")
     APPTOKEN = os.environ.get("APPTOKEN")
     app = App(token=BOTTOKEN)
@@ -17,6 +18,7 @@ def notify_user(alias):
     app.client.chat_postMessage(channel=resp["channel"]["id"], text=f"{alias}, You have Mail!")
 
 def notify_sender(alias, startId):
+    print("ReachS")
     BOTTOKEN = os.environ.get("BOTTOKEN")
     APPTOKEN = os.environ.get("APPTOKEN")
     app = App(token=BOTTOKEN)
