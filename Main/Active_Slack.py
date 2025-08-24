@@ -20,11 +20,14 @@ def notify_sender(alias, startId):
     BOTTOKEN = os.environ.get("BOTTOKEN")
     APPTOKEN = os.environ.get("APPTOKEN")
     app = App(token=BOTTOKEN)
-    
+
     id = startId
-    
-    resp = app.client.conversations_open(users=[id])
-    app.client.chat_postMessage(channel=resp["channel"]["id"], text=f"{alias}'s Mail Proccesed.")
+    try:
+        resp = app.client.conversations_open(users=[id])
+        app.client.chat_postMessage(channel=resp["channel"]["id"], text=f"{alias}'s Mail Proccesed.")
+    except Exception as e:
+        print(f"Error notifying sender: {e}")
+        return False
 
 def set_bot_status(status = "away"):
     

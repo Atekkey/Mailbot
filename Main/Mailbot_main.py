@@ -14,7 +14,6 @@ from Active_Slack import notify_user, set_bot_status, notify_sender
 
 sys.tracebacklimit = 0
 globalIsOnComputer = False
-globalStartUser = ""
 
 def main():
     signal.signal(signal.SIGPIPE, signal.SIG_IGN) # Ignore SIGPIPE
@@ -50,7 +49,7 @@ def main():
 
 # This is the client side of the socket connection
 def reading_from_scanner(stop_time):
-    
+    startUser = ""
     # Gen alias list
     names = generate_list()
 
@@ -95,9 +94,9 @@ def reading_from_scanner(stop_time):
             if(name != ""):
                 # Notify User
                 notify_user(name)
-                if globalStartUser == "":
-                    globalStartUser = os.environ.get("STARTUSER")
-                notify_sender(name, globalStartUser)
+                if startUser == "":
+                    startUser = os.environ.get("STARTUSER")
+                notify_sender(name, startUser)
         
         except Exception as e:
             print(e)
