@@ -20,7 +20,7 @@ def notify_sender(alias, startId):
     BOTTOKEN = os.environ.get("BOTTOKEN")
     APPTOKEN = os.environ.get("APPTOKEN")
     app = App(token=BOTTOKEN)
-
+    print("SU!: ", os.environ["STARTUSER"])
     id = startId
     try:
         resp = app.client.conversations_open(users=[id])
