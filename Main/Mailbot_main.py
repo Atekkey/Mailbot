@@ -34,6 +34,7 @@ def main():
         # passive.wait()
         stdout, stderr = passive.communicate()
         globalUserId = stdout.strip()
+        print("SU: ", globalUserId)
         if(passive.returncode != 0): # Killed
             exit(1)
                 
@@ -56,7 +57,6 @@ def main():
 
 # This is the client side of the socket connection
 def reading_from_scanner(stop_time):
-    startUser = ""
     # Gen alias list
     names = generate_list()
 
