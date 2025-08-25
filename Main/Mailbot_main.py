@@ -64,6 +64,11 @@ def reading_from_scanner(stop_time, uid):
     print("Client connected")
     i = 0
     while time.time() < stop_time:
+        # i += 1
+        # if(i % 40 != 0): # KEEP very helpful, kills the delay
+        #     continue
+        time.sleep(0.2)
+
         # While the current data is less than the size of the desired payload size
         while len(data) < payload_size:
             # Take in a packet
@@ -83,20 +88,19 @@ def reading_from_scanner(stop_time, uid):
         frame_data = data[:msg_size]
         data = data[msg_size:]
         frame = pickle.loads(frame_data)
-        i += 1
-        if(i % 60 != 0): # KEEP very helpful, kills the delay
-            continue
+        
         try:
             if globalIsOnComputer:
                 cv2.imshow('Client', frame)
             text = imageToText(frame)
+            print("Text: ", text)
             name = strCompareToList(names, text)
             if(name != ""):
                 # Notify User
                 notify_user(name)
                 if uid:
                     notify_sender(name, uid)
-
+            
         except Exception as e:
             print(e)
             pass
