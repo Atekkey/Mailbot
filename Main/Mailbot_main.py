@@ -39,7 +39,6 @@ def main():
         set_bot_status("auto")
 
         uid = fetchUID() # Get user from file
-        print("post UID: ", uid)
         time.sleep(1) # Bandaid to the race cond
         reading_from_scanner(stop_time, uid) # Start client code, runs for lifespan
         
@@ -84,8 +83,8 @@ def reading_from_scanner(stop_time, uid):
         frame_data = data[:msg_size]
         data = data[msg_size:]
         frame = pickle.loads(frame_data)
-        i+=1
-        if(i % 40 != 0): # KEEP very helpful, kills the delay
+        i += 1
+        if(i % 60 != 0): # KEEP very helpful, kills the delay
             continue
         try:
             if globalIsOnComputer:
@@ -94,7 +93,6 @@ def reading_from_scanner(stop_time, uid):
             name = strCompareToList(names, text)
             if(name != ""):
                 # Notify User
-                print("Reach")
                 notify_user(name)
                 if uid:
                     notify_sender(name, uid)
