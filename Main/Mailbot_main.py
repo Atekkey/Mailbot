@@ -14,7 +14,6 @@ from Active_Slack import notify_user, set_bot_status, notify_sender
 
 sys.tracebacklimit = 0
 globalIsOnComputer = False
-globalUserId = ""
 
 def main():
     signal.signal(signal.SIGPIPE, signal.SIG_IGN) # Ignore SIGPIPE
@@ -25,16 +24,9 @@ def main():
 
         set_bot_status("away")
 
-        passive = subprocess.Popen(["python", "Passive_Slack.py"], 
-                                   stdout=subprocess.PIPE,
-                                    stderr=subprocess.PIPE,
-                                    text=True
-                                    ) # Startup Passive_Slack.py
+        passive = subprocess.Popen(["python", "Passive_Slack.py"], ) # Startup Passive_Slack.py
         print("Passive pid: ", str(passive.pid))
-        # passive.wait()
-        stdout, stderr = passive.communicate()
-        globalUserId = stdout.strip()
-        print("SU: ", globalUserId)
+        passive.wait()
         if(passive.returncode != 0): # Killed
             exit(1)
                 
@@ -102,8 +94,10 @@ def reading_from_scanner(stop_time):
                 # Notify User
                 print("Reach")
                 notify_user(name)
-                if globalUserId:
-                    notify_sender(name, globalUserId)
+                uid = os.environ.get("STARTUSER")
+                print("UIDLater: ", uid)
+                if uid:
+                    notify_sender(name, uid)
 
         except Exception as e:
             print(e)
