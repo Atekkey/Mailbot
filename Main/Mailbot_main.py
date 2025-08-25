@@ -31,7 +31,7 @@ def main():
             exit(1)
                 
         init_time = time.time()
-        lifespan = 3 * 60 # In seconds
+        lifespan = 1 * 60 # In seconds
         stop_time = init_time + lifespan
         # Start Scanner.py
         scanner = subprocess.Popen(["python", "Scanner.py"]) # Startup Scanner.py
@@ -52,6 +52,7 @@ def main():
 def reading_from_scanner(stop_time, uid):
     # Gen alias list
     names = generate_list()
+    recent_names = set([])
 
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # Arduino vs Laptop socket Connection
@@ -59,15 +60,15 @@ def reading_from_scanner(stop_time, uid):
         client_socket.connect(('0.0.0.0', 8888))  
     else:
         client_socket.connect(('127.0.0.1', 8888))  
+    
     data = b""
     payload_size = struct.calcsize("Q")
     print("Client connected")
     i = 0
+    last_process_time = 0
+    process_min_interval = 0.200 # 200 ms
+
     while time.time() < stop_time:
-        i += 1
-        if(i % 40 != 0): # KEEP very helpful, kills the delay
-            continue
-        # time.sleep(0.2)
 
         # While the current data is less than the size of the desired payload size
         while len(data) < payload_size:
@@ -83,24 +84,35 @@ def reading_from_scanner(stop_time, uid):
         packed_msg_size = data[:payload_size]
         data = data[payload_size:]
         msg_size = struct.unpack("Q", packed_msg_size)[0]
+
         while len(data) < msg_size:
-            data += client_socket.recv(4 * 1024)  # 4K buffer size
+            data += client_socket.recv(16 * 1024)  # 16K buff
         frame_data = data[:msg_size]
         data = data[msg_size:]
-        frame = pickle.loads(frame_data)
+        
+        # Also enforce minimum time interval
+        cur_time = time.time()
+        if cur_time - last_process_time < process_min_interval:
+            continue
         
         try:
+            frame = pickle.loads(frame_data)
             if globalIsOnComputer:
                 cv2.imshow('Client', frame)
             text = imageToText(frame).upper()
             print("Text: ", text)
             name = strCompareToList(names, text)
             if(name != ""):
+                if name not in recent_names:
+                    recent_names.add(name)
+                else:
+                    continue
                 # Notify User
                 notify_user(name)
                 if uid:
                     notify_sender(name, uid)
-            
+            last_process_time = cur_time
+        
         except Exception as e:
             print(e)
             pass
