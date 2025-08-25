@@ -16,7 +16,6 @@ from Handle_Names import add_alias, remove_id, get_id_to_alias
 
 app = App(token=BOTTOKEN)
 signal.signal(signal.SIGPIPE, signal.SIG_IGN) # Ignore SIGPIPE
-# print("Passive, PID: ", str(os.getpid()))
 
 def safe_say(message, say):
     try:
@@ -51,11 +50,10 @@ def handle_dm(event, say):
         return
     
     if(len(textSplit) == 1):
-
         if(textSplit[0] == "START" or textSplit[0] == "INIT"):
             safe_say(f"Started!", say)
             os.environ["STARTUSER"] = user_id
-            print("SU: ", user_id, " ", os.environ["STARTUSER"]) 
+            print(user_id) 
             os._exit(0)
 
         if(textSplit[0] == "ADMINKILL" and user_id == "U06DP4P5DC6"):
