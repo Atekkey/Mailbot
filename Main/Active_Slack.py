@@ -13,7 +13,9 @@ def notify_user(alias):
     id = alias_to_id[alias]
     
     resp = app.client.conversations_open(users=[id])
-    app.client.chat_postMessage(channel=resp["channel"]["id"], text=f"{alias}, You have Mail!")
+
+    outName = alias.lower().capitalize()
+    app.client.chat_postMessage(channel=resp["channel"]["id"], text=f"{outName}, You have Mail!")
 
 def notify_sender(alias, startId):
     # print("ReachS")
@@ -21,8 +23,9 @@ def notify_sender(alias, startId):
     app = App(token=BOTTOKEN)
     id = startId
     try:
+        outName = alias.lower().capitalize()
         resp = app.client.conversations_open(users=[id])
-        app.client.chat_postMessage(channel=resp["channel"]["id"], text=f"{alias}'s Mail Proccesed.")
+        app.client.chat_postMessage(channel=resp["channel"]["id"], text=f"{outName}'s Mail Proccesed.")
     except Exception as e:
         print(f"Error notifying sender: {e}")
         return False

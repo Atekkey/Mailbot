@@ -64,10 +64,10 @@ def reading_from_scanner(stop_time, uid):
     print("Client connected")
     i = 0
     while time.time() < stop_time:
-        # i += 1
-        # if(i % 40 != 0): # KEEP very helpful, kills the delay
-        #     continue
-        time.sleep(0.2)
+        i += 1
+        if(i % 40 != 0): # KEEP very helpful, kills the delay
+            continue
+        # time.sleep(0.2)
 
         # While the current data is less than the size of the desired payload size
         while len(data) < payload_size:
@@ -92,7 +92,7 @@ def reading_from_scanner(stop_time, uid):
         try:
             if globalIsOnComputer:
                 cv2.imshow('Client', frame)
-            text = imageToText(frame)
+            text = imageToText(frame).upper()
             print("Text: ", text)
             name = strCompareToList(names, text)
             if(name != ""):
