@@ -100,7 +100,7 @@ def reading_from_scanner(stop_time, uid):
             if globalIsOnComputer:
                 cv2.imshow('Client', frame)
             text = imageToText(frame).upper()
-            print("Text: ", text)
+            # print("Text: ", text)
             name = strCompareToList(names, text)
             if(name != ""):
                 if name not in recent_names:
