@@ -3,6 +3,7 @@ from PIL import Image
 import pytesseract
 import numpy as np
 import cv2
+import os
 
 globalIsOnComputer = False
 
@@ -28,4 +29,14 @@ def checkForName(textIn):
     else:
         return name
     
+def fetchUID():
+    path = "uid.txt"
+    if os.path.exists(path):
+        with open(path, "r") as f:
+            return f.read().strip()
+    return ""
 
+def setUID(uid):
+    path = "uid.txt"
+    with open(path, "w") as f:
+        f.write(uid)

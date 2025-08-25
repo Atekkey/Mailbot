@@ -10,6 +10,7 @@ APPTOKEN = os.environ.get("APPTOKEN")
 import os
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
+from functions import setUID
 
 from Handle_Names import add_alias, remove_id, get_id_to_alias
 
@@ -52,8 +53,7 @@ def handle_dm(event, say):
     if(len(textSplit) == 1):
         if(textSplit[0] == "START" or textSplit[0] == "INIT"):
             safe_say(f"Started!", say)
-            os.environ["STARTUSER"] = user_id
-            print("UID: ", user_id)
+            setUID(user_id)
             os._exit(0)
 
         if(textSplit[0] == "ADMINKILL" and user_id == "U06DP4P5DC6"):

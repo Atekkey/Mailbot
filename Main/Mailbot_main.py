@@ -2,7 +2,7 @@ import cv2
 import socket
 import pickle
 import struct
-from functions import imageToText
+from functions import imageToText, fetchUID
 import pytesseract
 import os
 import sys
@@ -37,9 +37,11 @@ def main():
         scanner = subprocess.Popen(["python", "Scanner.py"]) # Startup Scanner.py
         print("Scanner pid: ", str(scanner.pid))
         set_bot_status("auto")
-        
+
+        uid = fetchUID() # Get user from file
+        print("post UID: ", uid)
         time.sleep(1) # Bandaid to the race cond
-        reading_from_scanner(stop_time) # Start client code, runs for lifespan
+        reading_from_scanner(stop_time, uid) # Start client code, runs for lifespan
         
         os.kill((scanner.pid), signal.SIGTERM) # Send signal to Scanner.py
         
@@ -48,7 +50,7 @@ def main():
 
 
 # This is the client side of the socket connection
-def reading_from_scanner(stop_time):
+def reading_from_scanner(stop_time, uid):
     # Gen alias list
     names = generate_list()
 
@@ -94,8 +96,6 @@ def reading_from_scanner(stop_time):
                 # Notify User
                 print("Reach")
                 notify_user(name)
-                uid = os.environ.get("STARTUSER")
-                print("UIDLater: ", uid)
                 if uid:
                     notify_sender(name, uid)
 
