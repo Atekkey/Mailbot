@@ -31,8 +31,9 @@ def main():
         passive = subprocess.Popen(["python", "Passive_Slack.py"], ) # Startup Passive_Slack.py
         print("Passive pid: ", str(passive.pid))
         passive.wait()
-        if(passive.returncode != 0): # Killed
+        if(passive.returncode == -1): # Killed
             exit(1)
+        print("REACH LOW")
                 
         init_time = time.time()
         lifespan = 1 * 60 # In seconds
@@ -104,7 +105,7 @@ def reading_from_scanner(stop_time, uid):
             if globalIsOnComputer:
                 cv2.imshow('Client', frame)
             text = imageToText(frame).upper()
-            # print("Text: ", text)
+            print("Text: ", text)
             name = strCompareToList(names, text)
             if(name != ""):
                 if name not in recent_names:

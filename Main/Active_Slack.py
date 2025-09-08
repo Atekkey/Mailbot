@@ -19,7 +19,6 @@ def notify_user(alias):
     app.client.chat_postMessage(channel=resp["channel"]["id"], text=f"{outName}, You have Mail!")
 
 def notify_sender(alias, startId):
-    # print("ReachS")
     BOTTOKEN = os.environ.get("BOTTOKEN")
     app = App(token=BOTTOKEN)
     id = startId
