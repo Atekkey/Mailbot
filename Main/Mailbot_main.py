@@ -9,27 +9,34 @@ import sys
 import subprocess
 import signal
 import time
+import threading
 from Handle_Names import generate_list, strCompareToList
-from Active_Slack import notify_user, set_bot_status, notify_sender
+from Active_Slack import notify_user, set_bot_status, notify_sender, notify_sender_ended
 
 sys.tracebacklimit = 0
 globalIsOnComputer = False
+evt = threading.Event()
+evt.clear()
+
+def handler(signum, frame):
+    evt.set()
 
 def main():
     signal.signal(signal.SIGPIPE, signal.SIG_IGN) # Ignore SIGPIPE
     print("Main, PID: ", str(os.getpid()))
+    signal.signal(signal.SIGUSR1, handler)
+
+    evt.clear()
+    passive = subprocess.Popen(["python", "Passive_Slack.py"], ) # Startup Passive_Slack.py
+    print("Passive pid: ", str(passive.pid))
+
 
     # WHILE NOT KILLED::::
     while(1):
 
-        set_bot_status("away")
+        evt.clear()
+        evt.wait()
 
-        passive = subprocess.Popen(["python", "Passive_Slack.py"], ) # Startup Passive_Slack.py
-        print("Passive pid: ", str(passive.pid))
-        passive.wait()
-        if(passive.returncode != 0): # Killed
-            exit(1)
-                
         init_time = time.time()
         lifespan = 1 * 60 # In seconds
         stop_time = init_time + lifespan
@@ -46,6 +53,11 @@ def main():
         
         # Kill Scanner.py
         # Head to top of loop
+        
+        # Loop done notif
+        notify_sender_ended(uid)
+
+        
 
 
 # This is the client side of the socket connection
@@ -100,7 +112,7 @@ def reading_from_scanner(stop_time, uid):
             if globalIsOnComputer:
                 cv2.imshow('Client', frame)
             text = imageToText(frame).upper()
-            # print("Text: ", text)
+            print("Text: ", text)
             name = strCompareToList(names, text)
             if(name != ""):
                 if name not in recent_names:

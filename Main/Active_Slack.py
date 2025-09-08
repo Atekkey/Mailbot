@@ -19,7 +19,6 @@ def notify_user(alias):
     app.client.chat_postMessage(channel=resp["channel"]["id"], text=f"{outName}, You have Mail!")
 
 def notify_sender(alias, startId):
-    # print("ReachS")
     BOTTOKEN = os.environ.get("BOTTOKEN")
     app = App(token=BOTTOKEN)
     id = startId
@@ -28,6 +27,17 @@ def notify_sender(alias, startId):
         outName = " ".join([n.capitalize() for n in outNameList])
         resp = app.client.conversations_open(users=[id])
         app.client.chat_postMessage(channel=resp["channel"]["id"], text=f"{outName}'s Mail Proccesed.")
+    except Exception as e:
+        print(f"Error notifying sender: {e}")
+        return False
+
+def notify_sender_ended(startId):
+    BOTTOKEN = os.environ.get("BOTTOKEN")
+    app = App(token=BOTTOKEN)
+    id = startId
+    try:
+        resp = app.client.conversations_open(users=[id])
+        app.client.chat_postMessage(channel=resp["channel"]["id"], text=f"Scanner Closed.")
     except Exception as e:
         print(f"Error notifying sender: {e}")
         return False
