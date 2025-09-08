@@ -15,9 +15,13 @@ from Active_Slack import notify_user, set_bot_status, notify_sender
 sys.tracebacklimit = 0
 globalIsOnComputer = False
 
+def handler(signum, frame):
+    print("GOT SIGNAL")
+
 def main():
     signal.signal(signal.SIGPIPE, signal.SIG_IGN) # Ignore SIGPIPE
     print("Main, PID: ", str(os.getpid()))
+    signal.signal(signal.SIGUSR1, handler)
 
     # WHILE NOT KILLED::::
     while(1):
