@@ -11,7 +11,7 @@ import signal
 import time
 import threading
 from Handle_Names import generate_list, strCompareToList
-from Active_Slack import notify_user, set_bot_status, notify_sender
+from Active_Slack import notify_user, set_bot_status, notify_sender, notify_sender_ended
 
 sys.tracebacklimit = 0
 globalIsOnComputer = False
@@ -26,20 +26,17 @@ def main():
     print("Main, PID: ", str(os.getpid()))
     signal.signal(signal.SIGUSR1, handler)
 
+    evt.clear()
+    passive = subprocess.Popen(["python", "Passive_Slack.py"], ) # Startup Passive_Slack.py
+    print("Passive pid: ", str(passive.pid))
+
 
     # WHILE NOT KILLED::::
     while(1):
 
-        set_bot_status("away")
-
-        passive = subprocess.Popen(["python", "Passive_Slack.py"], ) # Startup Passive_Slack.py
-        print("Passive pid: ", str(passive.pid))
-
-        evt.wait()
         evt.clear()
-        
-        print("REACH LOW")
-                
+        evt.wait()
+
         init_time = time.time()
         lifespan = 1 * 60 # In seconds
         stop_time = init_time + lifespan
@@ -56,6 +53,11 @@ def main():
         
         # Kill Scanner.py
         # Head to top of loop
+        
+        # Loop done notif
+        notify_sender_ended(uid)
+
+        
 
 
 # This is the client side of the socket connection
