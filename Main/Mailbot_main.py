@@ -25,9 +25,7 @@ def main():
     signal.signal(signal.SIGPIPE, signal.SIG_IGN) # Ignore SIGPIPE
     print("Main, PID: ", str(os.getpid()))
     signal.signal(signal.SIGUSR1, handler)
-    
-    evt.wait()
-    evt.clear()
+
 
     # WHILE NOT KILLED::::
     while(1):
@@ -36,9 +34,10 @@ def main():
 
         passive = subprocess.Popen(["python", "Passive_Slack.py"], ) # Startup Passive_Slack.py
         print("Passive pid: ", str(passive.pid))
-        passive.wait()
-        # if(passive.returncode == -1): # Killed
-        #     exit(1)
+
+        evt.wait()
+        evt.clear()
+        
         print("REACH LOW")
                 
         init_time = time.time()
