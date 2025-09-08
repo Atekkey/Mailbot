@@ -55,11 +55,13 @@ def handle_dm(event, say):
             safe_say(f"Started!", say)
             setUID(user_id)
             os.kill(os.getppid(), signal.SIGUSR1)
+            return
             # os._exit(0)
 
         if(textSplit[0] == "ADMINKILL" and user_id == "U06DP4P5DC6"):
             safe_say(f"KILLED", say)
-            os._exit(-4)
+            os.kill(os.getppid(), signal.SIGUSR2)
+            return
         
         if(textSplit[0] == "LIST"):
             id_to_alias = get_id_to_alias()
