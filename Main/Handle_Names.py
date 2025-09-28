@@ -2,12 +2,12 @@ import json
 import os
 import regex as re
 
-def get_id_to_alias():
+def get_id_to_alias(): # Make Id to Alias Dict
     with open("names.json", "r+") as f:
         id_to_alias = json.load(f)
         return id_to_alias
 
-def get_alias_to_id():
+def get_alias_to_id(): # Make Alias to Id Dict
     with open("names.json", "r+") as f:
         alias_to_id = {}
         id_to_alias = json.load(f)
@@ -16,7 +16,7 @@ def get_alias_to_id():
                 alias_to_id[alias] = id
         return alias_to_id
 
-def add_alias(id, alias):
+def add_alias(id, alias): # Add Alias for User
     with open("names.json", "r+") as f:
         id_to_alias = json.load(f)
 
@@ -29,7 +29,7 @@ def add_alias(id, alias):
     with open("names.json", "w") as f:
         json.dump(id_to_alias, f, indent=2)
 
-def remove_id(id):
+def remove_id(id): # Remove User and return their aliases
     with open("names.json", "r+") as f:
         id_to_alias = json.load(f)
     aliases = []
@@ -41,7 +41,7 @@ def remove_id(id):
         json.dump(id_to_alias, f, indent=2)
     return aliases
 
-def generate_list():
+def generate_list(): # Get all Aliases
     alias_list = []
     with open("names.json", "r+") as f:
         id_to_alias = json.load(f)
@@ -51,7 +51,7 @@ def generate_list():
     alias_list = list(set(alias_list)) # avoid dups
     return alias_list
 
-def strCompareToList(names, longStr):
+def strCompareToList(names, longStr): # Looks for all aliases in a long string, returns first found
     for name in names:
         if(re.search(name, longStr) != None):
             return name
